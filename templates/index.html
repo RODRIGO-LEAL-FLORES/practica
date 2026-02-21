@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+{% block title %}Lista de Productos{% endblock %}
+
+{% block content %}
+<section class="section">
+  <div class="container">
+
+    <div class="level mb-5">
+      <div class="level-left">
+        <div class="level-item">
+          <div>
+            <p class="title is-4 mb-1">Lista de Productos</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="level-right">
+        <div class="level-item">
+          <a href="{{ url_for('create_producto') }}" class="button is-success">
+            <span class="icon">
+              <i class="fas fa-plus"></i>
+            </span>
+            <span>Agregar Producto</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <header class="card-header">
+        <p class="card-header-title">
+          <span class="icon mr-2">
+            <i class="fas fa-box"></i>
+          </span>
+          Registros
+        </p>
+
+        <div class="card-header-icon" aria-label="total">
+          <span class="tag is-link is-light">
+            {{ productos|length }} Total
+          </span>
+        </div>
+      </header>
+
+      <div class="card-content">
+        <div class="table-container">
+          <table class="table is-fullwidth is-hoverable is-striped">
+            <thead>
+              <tr>
+                <th>Código de barras</th>
+                <th>Nombre</th>
+                <th class="has-text-right">Precio compra</th>
+                <th class="has-text-right">Precio venta</th>
+                <th>Descripción</th>
+                <th class="has-text-right">Acciones</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {% for p in productos %}
+              <tr>
+                <td><span class="tag is-light">{{ p.codigo_barras }}</span></td>
+                <td>{{ p.nombre }}</td>
+                <td class="has-text-right">{{ p.precio_c }}</td>
+                <td class="has-text-right">{{ p.precio_v }}</td>
+                <td>{{ p.descripcion }}</td>
+
+                <td class="has-text-right">
+                  <div class="buttons are-small is-right">
+                    
+
+                    <!-- Editar producto -->
+<a href="{{ url_for('update_producto', codigo_barras=p.codigo_barras) }}"
+   class="button is-info">
+  <span class="icon">
+    <i class="fas fa-pen-to-square"></i>
+  </span>
+  <span>Editar</span>
+</a>
+
+<!-- Eliminar producto -->
+<a href="{{ url_for('delete_producto', codigo_barras=p.codigo_barras) }}"
+   class="button is-danger"
+   onclick="return confirm('¿Seguro que deseas eliminar este producto?');">
+  <span class="icon">
+    <i class="fas fa-trash"></i>
+  </span>
+  <span>Eliminar</span>
+</a>
+                  </div>
+                </td>
+              </tr>
+              {% endfor %}
+
+              {% if productos|length == 0 %}
+              <tr>
+                <td colspan="6">
+                  <div class="notification is-light">
+                    <span class="icon mr-2">
+                      <i class="fas fa-circle-info"></i>
+                    </span>
+                    No hay productos registrados.
+                  </div>
+                </td>
+              </tr>
+              {% endif %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+{% endblock %}
